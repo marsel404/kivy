@@ -1,0 +1,447 @@
+#:kivy 2.3.0
+
+<PhoneBox@BoxLayout>:
+    canvas.before:
+        Color:
+            rgba: (0.094, 0.094, 0.094, 1)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [6]
+
+<AutorizationButton@Button>:
+    canvas.before:
+        Color:
+            rgba: (0.490, 0.725, 0.145, 1)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [9]
+<SearchButton@Button>:
+    canvas.before:
+        Color:
+            rgba: (0.2, 0.2, 0.2, 1)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [9]
+<MainPageLink@BoxLayout>:
+    canvas.before:
+        Color:
+            rgba: (0.094, 0.094, 0.094, 1)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [6]
+
+
+<LoginScreen>
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        font_name: 'Arial'
+        
+        Image:
+            source: 'images/logo.png'
+            size_hint: None, None
+            size: 200, 100
+            pos_hint: {'x': 0, 'top': 1}
+
+        BoxLayout:
+            size_hint_y: None
+            orientation: 'vertical'
+            height: 40
+            padding: [0, 50, 0, 30]
+            Label:
+                id: enter
+                text: 'Вход'
+                halign: 'left'
+                valign: 'top'
+                text_size: self.width, None
+                font_size: 22
+                bold: True
+             
+        PhoneBox:
+            orientation: 'horizontal'
+            padding: 10
+            size_hint_y: None
+            height: 50
+            Image:
+                size_hint_x: None
+                size: 30, 30
+                source: 'images/flag.jpg'
+                pos_hint: {'center_y': 0.5}
+            Label:
+                size_hint_x: None
+                size: 30, 30
+                id: seven
+                text: '+7'
+                color: 0.827, 0.808, 0.282, 1
+                font_size: 13
+            TextInput:
+                id: phone_number
+                hint_text: '| Введите номер телефона'
+                hint_text_color: 0.263, 0.259, 0.137, 1
+                font_size: 13
+                size_hint_y: None
+                multiline: False
+                height: 30
+                background_color: 0, 0, 0, 0
+                foreground_color: 0.263, 0.259, 0.137, 1
+                input_type: 'number'
+                input_filter: 'int'
+            
+        BoxLayout:
+            orientation:'horizontal'
+            size_hint_y: None
+            height: 65
+            AutorizationButton:
+                text: 'Получить код авторизации'
+                font_size: 16
+                background_color: 0, 0, 0, 0
+                on_press: root.get_code()
+                size_hint_y: None
+                height: 50
+        
+        Label:
+            id: rules
+            text: 'Правила'
+            font_size: 13
+            size_hint_y: None
+            height: 50
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: 100
+            CheckBox:
+                color: (0, 1, 0, 1)
+                active: True
+                size_hint_x: None
+                width: 50
+            Label:
+                id: agreement
+                text: 'Продолжая авторизацию, вы согласны с условиями участия в программер лояльности Brent Fueller и даю согласие на обработку моих персональных данных на условиях определённых в'
+                text_size: self.width, None
+                halign: 'left'
+                valign: 'top'
+                size_hint_x: 1
+                font_size: 13
+        ScrollView:
+            size_hint: (1, None)
+            height: 30
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_x: None
+                width: self.minimum_width
+                spacing: 10
+                Button:
+                    text: 'Политика конфиденциальности'
+                    size_hint_x: None
+                    font_size: 12
+                    width: self.texture_size[0] + 20
+                Button:
+                    text: 'Соглашение на предоставление персональных данных'
+                    size_hint_x: None
+                    font_size: 12
+                    width: self.texture_size[0] + 20
+        BoxLayout:
+            orientation: 'horizontal'
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: None
+        padding: 10
+        SearchButton:
+            text: 'Найти заправку'
+            background_color: 0, 0, 0, 0
+            color: 0.490, 0.725, 0.145, 1
+            size_hint_y: None
+            height: 50
+                
+            
+<CodeScreen>
+    BoxLayout:
+        orientation: 'vertical'
+        padding: [10, 20, 10, 10]
+        Button:
+            id: logout_arrow
+            background_normal: 'images/arrow.png'
+            on_press: root.logout()
+            size_hint: None, None
+            size: 16, 16
+            pos_hint: {'x': 0, 'top': 1}
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Label:
+                id: check_number
+                text: 'Подтверждение номера'
+                font_size: 22
+                bold: True
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing: 15
+            size_hint: None, None
+            height: 70
+            width: self.minimum_width
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            padding: [0, 30, 0, 0]
+            # Поля для ввода кода (всего их 6)
+            TextInput:
+                id: digit1
+                multiline: False
+                size_hint_x: None
+                width: 24
+                height: 40
+                input_filter: 'int'
+                text: '0'
+                background_color: 0, 0, 0, 0
+                foreground_color: 0.263, 0.259, 0.137, 1
+                font_size: 22
+                on_focus: if self.focus: self.text = ''
+                on_text: if self.text: root.get_text(self, 1)
+            TextInput:
+                id: digit2
+                multiline: False
+                size_hint_x: None
+                width: 24
+                height: 40
+                input_filter: 'int'
+                max_text_length: 1
+                text: '0'
+                background_color: 0, 0, 0, 0
+                foreground_color: 0.263, 0.259, 0.137, 1
+                font_size: 22
+                on_focus: if self.focus: self.text = ''
+                on_text: if self.text: root.get_text(self, 2)
+            TextInput:
+                id: digit3
+                multiline: False
+                size_hint_x: None
+                width: 24
+                height: 40
+                input_filter: 'int'
+                max_text_length: 1
+                text: '0'
+                background_color: 0, 0, 0, 0
+                foreground_color: 0.263, 0.259, 0.137, 1
+                font_size: 22
+                on_focus: if self.focus: self.text = ''
+                on_text: if self.text: root.get_text(self, 3)
+            TextInput:
+                id: digit4
+                multiline: False
+                size_hint_x: None
+                width: 24
+                height: 40
+                input_filter: 'int'
+                max_text_length: 1
+                text: '0'
+                background_color: 0, 0, 0, 0
+                foreground_color: 0.263, 0.259, 0.137, 1
+                font_size: 22
+                on_focus: if self.focus: self.text = ''
+                on_text: if self.text: root.get_text(self, 4)
+            TextInput:
+                id: digit5
+                multiline: False
+                size_hint_x: None
+                width: 24
+                height: 40
+                input_filter: 'int'
+                max_text_length: 1
+                text: '0'
+                background_color: 0, 0, 0, 0
+                foreground_color: 0.263, 0.259, 0.137, 1
+                font_size: 22
+                on_focus: if self.focus: self.text = ''
+                on_text: if self.text: root.get_text(self, 5)
+            TextInput:
+                id: digit6
+                multiline: False
+                size_hint_x: None
+                width: 24
+                height: 40
+                input_filter: 'int'
+                max_text_length: 1
+                text: '0'
+                background_color: 0, 0, 0, 0
+                foreground_color: 0.263, 0.259, 0.137, 1
+                font_size: 22
+                on_focus: if self.focus: self.text = ''
+                on_text: if self.text: root.get_text(self, 6)
+        Label:
+            id: message_sent
+            text: 'Код отправлен на номер\n+79000000000'
+            font_size: 13
+            size_hint_y: None
+            height: 30
+            halign: 'center'
+        BoxLayout:
+            orientation:'horizontal'
+            size_hint_y: None
+            height: 80
+            AutorizationButton:
+                text: 'Продолжить'
+                font_size: 16
+                background_color: 0, 0, 0, 0
+                size_hint_y: None
+                height: 50
+                on_press: root.check_code()
+        BoxLayout:
+            orientation: 'horizontal'
+
+<MainPageScreen>
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 20
+        spacing: 10
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: 60
+            Image:
+                source: 'images/logo.png'
+                size_hint: None, None
+                size: 80, 40
+                pos_hint: {'x': 0, 'top': 1}
+            Widget:
+                size_hint_x: 1
+            Button:
+                id: logout_arrow
+                background_normal: 'images/arrow.png'
+                on_press: root.logout()
+                size_hint: None, None
+                size: 16, 16
+                pos_hint: {'y': 0.5}
+        ScrollView:
+            size_hint: (1, None)
+            height: 80
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint_x: None
+                width: self.minimum_width
+                spacing: 10
+                Button:
+                    id: deal1
+                    size_hint: None, None
+                    size: 80, 80
+                    background_normal: 'images/deal1.png'
+                Button:
+                    id: deal2
+                    size_hint: None, None
+                    size: 80, 80
+                    background_normal: 'images/deal2.png'
+                Button:
+                    id: deal3
+                    size_hint: None, None
+                    size: 80, 80
+                    background_normal: 'images/deal3.png'
+                Button:
+                    id: deal4
+                    size_hint: None, None
+                    size: 80, 80
+                    background_normal: 'images/deal4.png'
+                Button:
+                    id: deal5
+                    size_hint: None, None
+                    size: 80, 80
+                    background_normal: 'images/deal5.png'
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: 40
+            spacing: 10
+            Label:
+                id: one_time_qr
+                text:'565203046'
+                font_size: 12
+                size_hint_x: None
+                width: self.texture_size[0]
+                pos_hint: {'center_y': 0.5}
+            Image:
+                source: 'images/refresh.png'
+                size_hint: None, None
+                size: 9, 9
+                pos_hint: {'center_y': 0.5}
+            Widget:
+                size_hint_x: 1
+            Label:
+                id: card_number
+                text: '№313267'
+                font_size: 12
+                size_hint_x: None
+                width: self.texture_size[0]
+                pos_hint: {'center_y': 0.5}
+            Image:
+                source: 'images/round.png'
+                size_hint: None, None
+                size: 9, 9
+                pos_hint: {'center_y': 0.5}
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: 100
+            spacing: 20
+            Image:
+                source: 'images/qr_code.jpg'
+                size_hint: None, None
+                size: 70, 70
+                pos_hint: {'x': 0, 'top': 1}
+            BoxLayout:
+                orientation: 'vertical'
+                Label:
+                    id: amount
+                    text: '100'
+                    bold: True
+                    font_size: 23
+                    halign: 'left'
+                    text_size: self.width, None
+                Label:
+                    id: card_type
+                    text: 'GOLD'
+                    bold: True
+                    font_size: 26
+                    halign: 'left'
+                    text_size: self.width, None
+                Label:
+                    id: percent
+                    text: '+2 бонуса за каждые 100 рублей'
+                    font_size: 12
+                    halign: 'left'
+                    text_size: self.width, None
+        MainPageLink:
+            orientation: 'horizontal'
+            padding: 12
+            spacing: 10
+            size_hint_y: None
+            height: 40
+            Image:
+                source: 'images/profile.png'
+                size_hint: None, None
+                size: 16, 16
+                pos_hint: {'center_y': 0.5}
+            Label:
+                id: profile
+                text: 'Профиль'
+                font_size: 14
+                halign: 'left'
+                text_size: self.width, None
+        MainPageLink:
+            orientation: 'horizontal'
+            padding: 12
+            spacing: 10
+            size_hint_y: None
+            height: 40
+            Image:
+                source: 'images/profile.png'
+                size_hint: None, None
+                size: 16, 16
+                pos_hint: {'center_y': 0.5}
+            Label:
+                id: pay_ways
+                text: 'Способы оплаты'
+                font_size: 14
+                halign: 'left'
+                text_size: self.width, None
+        BoxLayout:
+            orientation: 'vertical'
