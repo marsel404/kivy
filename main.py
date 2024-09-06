@@ -8,6 +8,7 @@ class LoginScreen(Screen):
     def __init__(self, **kwargs):
         super(LoginScreen, self).__init__(**kwargs)
 
+
     def get_code(self):
         if self.ids.phone_number.text == constants.phone_number:
             self.manager.current = 'code'
@@ -57,7 +58,8 @@ class CodeScreen(Screen):
 class MainPageScreen(Screen):
     def __init__(self, **kwargs):
         super(MainPageScreen, self).__init__(**kwargs)
-    
+
+
     def logout(self):
         self.manager.current = 'login'
 
